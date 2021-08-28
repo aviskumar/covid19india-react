@@ -59,10 +59,17 @@ export const formatLastUpdated = (unformattedDate) => {
   });
 };
 
-export const parseIndiaDate = (isoDate) => {
-  if (!isoDate) return getIndiaDate();
-  if (isoDate.match(ISO_DATE_REGEX)) isoDate += INDIA_ISO_SUFFIX;
-  return utcToZonedTime(new Date(isoDate), 'Asia/Kolkata');
+export const parseIndiaDate = (unformattedDate) => {
+  if (!unformattedDate) {
+    return getIndiaDate();
+  }
+  if (
+    typeof unformattedDate === 'string' &&
+    unformattedDate.match(ISO_DATE_REGEX)
+  ) {
+    unformattedDate += INDIA_ISO_SUFFIX;
+  }
+  return utcToZonedTime(new Date(unformattedDate), 'Asia/Kolkata');
 };
 
 export const formatDate = (unformattedDate, formatString) => {
@@ -74,6 +81,12 @@ export const formatDate = (unformattedDate, formatString) => {
     unformattedDate += INDIA_ISO_SUFFIX;
   const date = utcToZonedTime(new Date(unformattedDate), 'Asia/Kolkata');
   return format(date, formatString, {
+    locale: locale,
+  });
+};
+
+export const formatDateObjIndia = (dateObj) => {
+  return format(dateObj, "yyyy-MM-dd'T'HH:mm:ss+05:30", {
     locale: locale,
   });
 };
